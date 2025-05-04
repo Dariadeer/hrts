@@ -21,6 +21,9 @@ class Camera {
     private movementVector: Vector;
     private movementSpeed: number;
 
+    public dragging: boolean;
+    public previousDraggingPoint: Vector;
+
     public playing: boolean;
     public debug: boolean;
 
@@ -51,6 +54,9 @@ class Camera {
         };
         this.movementVector = Vector.zero;
         this.movementSpeed = Camera.DEFAULT_MOVEMENT_SPEED;
+
+        this.dragging = false;
+        this.previousDraggingPoint = Vector.zero;
 
         this.scene = scene;
         this.playing = false;
@@ -101,6 +107,35 @@ class Camera {
                 case 'd':
                     this.movement[e.key] = 0;
                     this.updateMovementVector();
+            }
+        });
+
+        this.canvas.addEventListener('mousedown', (e) => {
+            e.preventDefault();
+            if(e.button) {
+                console.log('Down')
+                this.dragging = true;
+                this.previousDraggingPoint = new Vector(e.x, e.y);
+            }
+        });
+
+        window.oncontextmenu = (e) => e.preventDefault();
+
+        window.addEventListener('mouseup', (e) => {
+            e.preventDefault();
+            if(e.button) {
+                console.log('Up')
+                this.dragging = false;
+            }
+        });
+
+        window.addEventListener('mousemove', (e) => {
+            e.preventDefault();
+            if(this.dragging) {
+                console.log('Dragging')
+                const currentDraggingPoint = new Vector(e.x, e.y);
+                this.pos = this.pos.sub(currentDraggingPoint.sub(this.previousDraggingPoint).div(this.zoom));
+                this.previousDraggingPoint = currentDraggingPoint;
             }
         });
     }
