@@ -1,0 +1,23 @@
+{
+  "name": "hrts",
+  "version": "1.0.0",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node out/server.js",
+    "build": "tsc --build --clean && tsc && npm run copy-files",
+    "copy-files": "cp src/client/*.html out/client && cp src/client/*.css out/client",
+    "quick-start": "npm run build && npm start"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "express": "^5.1.0"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.1"
+  }
+}
