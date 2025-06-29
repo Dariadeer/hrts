@@ -1,5 +1,5 @@
 import HexMap from '../../logic/HexMap.js';
-import CameraContext from '../CameraContext.js';
+import CameraContext from '../camera/CameraContext.js';
 import CellView from './CellView.js';
 import View from './View.js';
 

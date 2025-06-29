@@ -2,7 +2,7 @@ import Cell from "../../logic/Cell.js";
 import Entity from "../../logic/Entity.js";
 import GameObject from "../../logic/GameObject.js";
 import Hexagon from "../../utils/Hexagon.js";
-import CameraContext from "../CameraContext.js";
+import CameraContext from "../camera/CameraContext.js";
 import EntityView from "./EntityView.js";
 import GameObjectView from "./GameObjectView.js";
 import View from "./View.js";
@@ -11,12 +11,14 @@ class CellView extends Hexagon implements View {
 
     static PADDING = 0.1;
     public cell: Cell;
+    public radius: number;
     public gameObjectView: GameObjectView | undefined;
     
     constructor(cell: Cell, radius: number) {
-        super(cell.pos.toHex(radius), radius * (1 - CellView.PADDING));
+        super(cell.pos.toHexCenter(radius), radius * (1 - CellView.PADDING));
 
         this.cell = cell;
+        this.radius = radius;
         this.trackCellContent();
     }
 
@@ -30,6 +32,9 @@ class CellView extends Hexagon implements View {
     }
 
     public display(cameraContext: CameraContext): void {
+
+        if(!cameraContext.isInFieldOfView(this.pos, this.radius)) return;
+        
         cameraContext.beginPath();
         cameraContext.moveTo(this.verteces[5]);
         for(let v of this.verteces) {

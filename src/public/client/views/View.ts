@@ -1,4 +1,4 @@
-import CameraContext from "../CameraContext";
+import CameraContext from "../camera/CameraContext";
 
 interface View {
     display(cameraContext: CameraContext): void;

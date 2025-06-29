@@ -1,6 +1,6 @@
 import Entity from "../../logic/Entity.js";
 import Vector from "../../utils/Vector.js";
-import CameraContext from "../CameraContext.js";
+import CameraContext from "../camera/CameraContext.js";
 import CellView from "./CellView.js";
 import GameObjectView from "./GameObjectView.js";
 import View from "./View.js";

@@ -10,6 +10,7 @@ class Vector {
 
     public static sin30 = Math.sin(Math.PI / 6);
     public static sin60 = Math.sin(Math.PI / 3);
+    public static tan60 = Math.tan(Math.PI / 3);
 
     public x: number;
     public y: number;
@@ -60,8 +61,33 @@ class Vector {
         return [this.x, this.y];
     }
 
-    public toHex(r: number) {
+    public toHexCenter(r: number): Vector {
         return new Vector((1 + Vector.sin30) * r * this.x, Vector.sin60 * (2 * this.y - this.x) * r);
+    }
+
+    public toHex1(hexSize: number): Vector {
+        const x = this.x / 1.5 / hexSize;
+        const guess = new Vector(x, (this.y / Vector.sin60 / hexSize - Math.round(x)) / 2);
+        const fraction = guess.sub(guess.floor());
+        let rounded = guess.round();
+        if(fraction.x >= 0.5 && fraction.x < 0.667) {
+            if(fraction.y >= 0.25 && fraction.y <= 0.5 && (fraction.y - 0.25)/(fraction.x - 0.5) > Vector.tan60) {
+                rounded = rounded.add(new Vector(-1, 1));
+            }
+    
+            if(fraction.y >= 0.5 && fraction.y <= 0.75 && (fraction.y - 0.75)/(fraction.x - 0.5) < -Vector.tan60) {
+                rounded = rounded.add(new Vector(-1, 0));
+            }
+        } else if(fraction.x > 0.333 && fraction.x <= 0.5) {
+            if(fraction.y >= 0.25 &&  fraction.y <= 0.5 && (fraction.y - 0.5)/(fraction.x - 0.333) > -Vector.tan60) {
+                rounded = rounded.add(new Vector(1, 0));
+            }
+    
+            if(fraction.y >= 0.5 && fraction.y <= 0.75 && (fraction.y - 0.5)/(fraction.x - 0.333) < Vector.tan60) {
+                rounded = rounded.add(new Vector(1, -1));
+            }
+        }
+        return rounded;
     }
 
     static direction(l: number, a: number) {

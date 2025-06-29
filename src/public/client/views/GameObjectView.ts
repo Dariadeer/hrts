@@ -1,11 +1,9 @@
 import GameObject from "../../logic/GameObject.js";
-import Vector from "../../utils/Vector.js";
-import CameraContext from "../CameraContext.js";
+import CameraContext from "../camera/CameraContext.js";
 import CellView from "./CellView.js";
-import EntityView from "./EntityView.js";
 import View from "./View.js";
 
-class GameObjectView implements View {
+abstract class GameObjectView implements View {
 
     public gameObject: GameObject;
     public cellView: CellView;
@@ -15,7 +13,7 @@ class GameObjectView implements View {
         this.cellView = cellView;
     }
 
-    display(cameraContext: CameraContext): void {}
+    public abstract display(cameraContext: CameraContext): void;
 }
 
 export default GameObjectView;

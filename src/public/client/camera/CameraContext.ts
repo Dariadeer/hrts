@@ -1,4 +1,4 @@
-import Vector from "../utils/Vector";
+import Vector from "../../utils/Vector";
 import Camera from "./Camera";
 
 class CameraContext {
@@ -17,8 +17,12 @@ class CameraContext {
         this.colorMap = new Map<number, string>;
     }
 
-    globalToLocal(v: Vector): [number, number] {
-        return v.add(this.camera.screenPos).sub(this.camera.pos).scale(this.camera.zoom).components();
+    globalToLocal(v: Vector): Vector {
+        return v.add(this.camera.screenPos).sub(this.camera.pos).scale(this.camera.zoom);
+    }
+
+    globalToLocalAsArray(v: Vector): [number, number] {
+        return this.globalToLocal(v).components();
     }
 
     beginPath(): void {
@@ -34,7 +38,7 @@ class CameraContext {
     }
 
     fillRect(v: Vector, d: Vector): void {
-        this.context.fillRect(...this.globalToLocal(v), ...d.scale(this.camera.zoom).components());
+        this.context.fillRect(...this.globalToLocalAsArray(v), ...d.scale(this.camera.zoom).components());
     }
 
     setColor(color: number): void {
@@ -47,19 +51,28 @@ class CameraContext {
     }
 
     lineTo(v: Vector): void {
-        this.context.lineTo(...this.globalToLocal(v));
+        this.context.lineTo(...this.globalToLocalAsArray(v));
     }
 
     moveTo(v: Vector): void {
-        this.context.moveTo(...this.globalToLocal(v));
+        this.context.moveTo(...this.globalToLocalAsArray(v));
     }
 
-    debugText(text: string, v: Vector) {
+    debugText(text: string, v: Vector): void {
         if(this.camera.debug) {
+            this.context.font = 'bold ' + ((this.camera.zoom * 20) | 0) + 'px serif';
             this.context.textAlign = 'center';
             this.setColor(CameraContext.DEBUG_COLOR);
-            this.context.fillText(text, ...this.globalToLocal(v));
+            this.context.fillText(text, ...this.globalToLocalAsArray(v));
         }
+    }
+
+    isInFieldOfView(v: Vector, globalMargin: number): boolean {
+        const localPos = this.globalToLocal(v);
+        const localMargin = globalMargin * this.camera.zoom;
+        return localPos.x > -localMargin && localPos.y > -localMargin 
+            && localPos.x < localMargin + this.camera.width 
+            && localPos.y < localMargin + this.camera.height;
     }
 }
 
