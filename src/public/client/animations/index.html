@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editor</title>
+    <link rel="stylesheet" href="./style.css">
+    <script src="./main.js" type="module" defer></script>
+</head>
+<body>
+    <div class="panel menu-panel">
+        <div class="option" id="file">File</div>
+        <div class="option" id="mode">Mode</div>
+        <div class="option" id="models">Models</div>
+    </div>
+    <div class="panel tool-panel">
+        <div class="tool-icon" id="move-tool">Move</div>
+        <div class="tool-icon" id="resize-tool">Resize</div>
+        <div class="tool-icon" id="rotate-tool">Rotate</div>
+        <div class="tool-icon" id="rect-tool">Rect</div>
+        <div class="tool-icon" id="circle-tool">Circle</div>
+        <div class="tool-icon last" id="poly-tool">Poly</div>
+    </div>
+    <div class="panel list-panel">
+        <input class="model-name" id="model-name" type="text" value="">
+        <div class="component-list" id="components">
+        </div>
+    </div>
+    <div class="panel property-panel">
+        <input class="component-name" id="component-name" type="text" value="">
+        <div class="property-list" id="properties"></div>
+        
+    </div>
+    <div class="panel animation-panel"></div>
+
+    <!-- Pop-ups -->
+    <div class="panel model-panel hidden">
+        <div class="window-title">
+            Models
+            <div class="window-exit">✕</div>
+        </div>
+        <div class="model-list-container">
+            <div class="model-list"></div>
+        </div>
+        <div class="button-row">
+            <div class="window-action-button" id="new-model">New Model</div>
+            <div class="window-action-button inactive" id="add-model">Add Model</div>
+            <div class="window-action-button inactive" id="delete-model">Delete Model</div>
+        </div>
+    </div>
+</body>
+</html>

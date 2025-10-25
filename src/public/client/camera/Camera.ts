@@ -2,6 +2,8 @@ import Vector from "../../utils/Vector.js";
 import CameraContext from "./CameraContext.js";
 import Scene from "../Scene.js";
 import CameraController from "./CameraController.js";
+import GameController from "../GameController.js";
+import HexMapView from "../views/HexMapView.js";
 
 class Camera {
 
@@ -12,6 +14,7 @@ class Camera {
 
     public pos: Vector;
     public screenPos: Vector = Vector.zero;
+    public screenPosRatio: Vector;
     public container: HTMLElement;
     public scene: Scene;
 
@@ -28,15 +31,16 @@ class Camera {
 
     // public onCellClicked: Function;
 
-    private cameraController: CameraController;
-    private cameraContext: CameraContext;
-    private canvas: HTMLCanvasElement;
+    public cameraController: CameraController;
+    public cameraContext: CameraContext;
+    public canvas: HTMLCanvasElement;
     private context: CanvasRenderingContext2D;
 
-    constructor(scene: Scene, pos?: Vector, container?: HTMLElement) {
+    constructor(scene: Scene, pos?: Vector, container?: HTMLElement, screenPosRatio?: Vector) {
 
         this.canvas = document.createElement('canvas');
         this.canvas.className = 'camera';
+        this.canvas.style.zIndex = '-1';
         const context: CanvasRenderingContext2D | null = this.canvas.getContext('2d');
         if(!context) throw new Error('Failed to get the 2d rendering context of the canvas');
 
@@ -52,6 +56,7 @@ class Camera {
         this.height = 0;
 
         this.zoom = 1;
+        this.screenPosRatio = screenPosRatio || new Vector(0.5, 0.5);
 
         this.pos = pos || Vector.zero;
         this.movementVector = Vector.zero;
@@ -69,7 +74,7 @@ class Camera {
         window.addEventListener('resize', () => this.adjustSize());
     }
 
-    private adjustSize(): void {
+    public adjustSize(): void {
         const rect = this.container.getBoundingClientRect();
         this.width = rect.width * this.dpr;
         this.height = rect.height * this.dpr;
@@ -79,7 +84,7 @@ class Camera {
 
         this.context.scale(this.dpr, this.dpr);
 
-        this.screenPos = new Vector(this.width / 2, this.height / 2).div(this.dpr);
+        this.screenPos = new Vector(this.width * this.screenPosRatio.x, this.height * this.screenPosRatio.y).div(this.dpr);
     }
 
     private disableContextMenu(): void {

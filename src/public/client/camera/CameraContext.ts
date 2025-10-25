@@ -5,8 +5,8 @@ class CameraContext {
 
     public static DEBUG_COLOR = 0x005500;
 
-    private camera: Camera;
-    private context: CanvasRenderingContext2D;
+    public camera: Camera;
+    public context: CanvasRenderingContext2D;
 
     private colorMap: Map<number, string>;
 
@@ -21,12 +21,20 @@ class CameraContext {
         return v.add(this.camera.screenPos).sub(this.camera.pos).scale(this.camera.zoom);
     }
 
+    localToGlobal(v: Vector) {
+        return v.div(this.camera.zoom).sub(this.camera.screenPos).add(this.camera.pos);
+    }
+
     globalToLocalAsArray(v: Vector): [number, number] {
         return this.globalToLocal(v).components();
     }
 
     beginPath(): void {
         this.context.beginPath();
+    }
+
+    closePath(): void {
+        this.context.closePath();
     }
 
     stroke(): void {
@@ -37,8 +45,28 @@ class CameraContext {
         this.context.fill();
     }
 
+    fillRectAround(v: Vector, d: Vector, zoomIndependent?: boolean): void {
+        if(zoomIndependent) {
+            this.context.fillRect(...this.globalToLocal(v).sub(d.div(2)).components(), ...d.components());
+        } else {
+            this.context.fillRect(...this.globalToLocal(v).sub(d.div(2).scale(this.camera.zoom)).components(), ...d.scale(this.camera.zoom).components());
+        }
+    }
+
     fillRect(v: Vector, d: Vector): void {
         this.context.fillRect(...this.globalToLocalAsArray(v), ...d.scale(this.camera.zoom).components());
+    }
+
+    strokeRect(v: Vector, d: Vector): void {
+        this.context.rect(...this.globalToLocalAsArray(v), ...d.scale(this.camera.zoom).components());
+    }
+
+    strokeRectAround(v: Vector, d: Vector, zoomIndependent?: boolean): void {
+        if(zoomIndependent) {
+            this.context.rect(...this.globalToLocal(v).sub(d.div(2)).components(), ...d.components());
+        } else {
+            this.context.rect(...this.globalToLocal(v).sub(d.div(2).scale(this.camera.zoom)).components(), ...d.scale(this.camera.zoom).components());
+        }
     }
 
     setColor(color: number): void {
@@ -50,8 +78,29 @@ class CameraContext {
         this.context.fillStyle = str;
     }
 
+    setStroke(color: number): void {
+        let str = this.colorMap.get(color);
+        if(!str) {
+            str = `#${color.toString(16).padStart(6, '0')}`;
+            this.colorMap.set(color, str);
+        }
+        this.context.strokeStyle = str;
+    }
+
+    setStrokeWidth(w: number, zoomIndependent?: boolean) {
+        if(zoomIndependent) {
+            this.context.lineWidth = w;
+        } else {
+            this.context.lineWidth = w * this.camera.zoom;
+        }
+    }
+
     lineTo(v: Vector): void {
         this.context.lineTo(...this.globalToLocalAsArray(v));
+    }
+
+    quadraticCurveTo(c: Vector, v: Vector) {
+        this.context.quadraticCurveTo(...this.globalToLocalAsArray(c), ...this.globalToLocalAsArray(v));
     }
 
     moveTo(v: Vector): void {

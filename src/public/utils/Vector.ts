@@ -57,6 +57,14 @@ class Vector {
         return this.sub(v).length();
     }
 
+    public abs() {
+        return new Vector(Math.abs(this.x), Math.abs(this.y));
+    }
+
+    public angle() {
+        return Math.atan2(this.y, this.x);
+    }
+
     public components(): [number, number] {
         return [this.x, this.y];
     }
@@ -65,7 +73,15 @@ class Vector {
         return new Vector((1 + Vector.sin30) * r * this.x, Vector.sin60 * (2 * this.y - this.x) * r);
     }
 
-    public toHex1(hexSize: number): Vector {
+    public rotateHex(n: number) {
+        let r = new Vector(this.x, this.y);
+        for(let i = 0; i < n; i++) {
+            r = new Vector(r.x - r.y, r.x);
+        }
+        return r;
+    }
+
+    public toHex(hexSize: number): Vector {
         const x = this.x / 1.5 / hexSize;
         const guess = new Vector(x, (this.y / Vector.sin60 / hexSize - Math.round(x)) / 2);
         const fraction = guess.sub(guess.floor());
@@ -87,7 +103,7 @@ class Vector {
                 rounded = rounded.add(new Vector(1, -1));
             }
         }
-        return rounded;
+        return rounded.add(new Vector(0, rounded.x));
     }
 
     static direction(l: number, a: number) {
@@ -96,6 +112,10 @@ class Vector {
 
     public pack() {
         return (this.x + Vector.MAX) * (2 * Vector.MAX) + (this.y + Vector.MAX);
+    }
+
+    static lerp(v1: Vector, v2: Vector, t1: number, t2: number, t: number): Vector {
+        return (v2.sub(v1)).scale(t / (t2 - t1));
     }
 
     static unpack(n: number) {

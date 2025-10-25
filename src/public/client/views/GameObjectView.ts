@@ -1,6 +1,6 @@
 import GameObject from "../../logic/GameObject.js";
 import CameraContext from "../camera/CameraContext.js";
-import CellView from "./CellView.js";
+import CellView from "./TileView.js";
 import View from "./View.js";
 
 abstract class GameObjectView implements View {

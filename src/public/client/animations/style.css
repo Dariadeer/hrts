@@ -1,0 +1,350 @@
+:root {
+    /* Colors */
+    --background-color: #000000;
+    --ui-color: #444444;
+    --ui-color-2: #333333;
+    --ui-color-3: #222222;
+
+    --window-bar-color: #2f2f2f;
+
+    --current-color: #555533;
+
+    /* Measurements */
+    --general-ui-offset: 20px;
+    --button-offset: 5px;
+
+    --window-title-height: 40px;
+
+    --top-panel-height: 40px;
+    --top-panel-option-height: 30px;                
+    --top-panel-option-width: 100px;
+
+
+    --tool-icon-size: 50px;
+
+    --animation-panel-height: 300px;
+    --animation-panel-width: 60vw;
+
+    --right-panel-width: 400px;
+
+    --list-panel-height: 400px;
+
+    --model-panel-width: 80vw;
+    --model-panel-height: 80vh;
+    --model-preview-size: 240px;
+    --model-action-height: 50px;
+    --model-action-width: 150px;
+}
+
+* {
+    box-sizing: border-box;
+    scrollbar-color: var(--ui-color-3) var(--ui-color-2);
+    user-select: none;
+}
+
+body {
+    margin: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: var(--background-color);
+    overflow-y: hidden;
+}
+
+.camera {
+    width: 100%;
+    height: 100%;
+}
+
+.panel {
+    position: absolute;
+    background-color: var(--ui-color);
+    border-radius: 10px;
+    box-shadow: 2px 2px var(--ui-color-3), -2px -2px var(--ui-color-3);
+}
+
+.menu-panel {
+    top: var(--general-ui-offset);
+    left: var(--general-ui-offset);
+
+    display: flex;
+    flex-direction: row;
+    
+    height: var(--top-panel-height);
+}
+
+.option {
+    width: var(--top-panel-option-width);
+    height: var(--top-panel-option-height);
+    background-color: var(--ui-color-2);
+    border-radius: 10px;
+    margin: var(--button-offset);
+    
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+    color: white;
+    cursor: pointer;
+}
+
+.tool-panel {
+    top: calc(var(--top-panel-height) + 2 * var(--general-ui-offset));
+    left: var(--general-ui-offset);
+
+    width: calc(var(--tool-icon-size) + 2 * var(--button-offset));
+    padding: var(--button-offset);
+}
+
+.tool-icon {
+    width: var(--tool-icon-size);
+    height: var(--tool-icon-size);
+    background-color: var(--ui-color-2);
+    border-radius: 10px;
+    margin-bottom: var(--button-offset);
+    
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+    color: white;
+    cursor: pointer;
+}
+
+.animation-panel {
+    bottom: var(--general-ui-offset);
+    left: var(--general-ui-offset);
+
+    width: calc(100vw - 3 * var(--general-ui-offset) - var(--right-panel-width));
+    height: var(--animation-panel-height);
+}
+
+.list-panel {
+    top: var(--general-ui-offset);
+    right: var(--general-ui-offset);
+
+    width: var(--right-panel-width);
+    height: var(--list-panel-height);
+
+    padding: var(--general-ui-offset);
+}
+
+.model-name, .component-name {
+    background-color: var(--ui-color-3);
+    color: white;
+    border: none;
+    font-size: 20px;
+    border-radius: 10px;
+    margin-bottom: var(--general-ui-offset);
+    padding: var(--button-offset);
+    width: 100%;
+}
+
+.component-list {
+    padding-right: var(--button-offset);
+    height: calc(var(--list-panel-height) - 5 * var(--general-ui-offset));
+    overflow-y: auto;
+}
+
+.component {
+    position: relative;;
+
+    background-color: var(--ui-color-2);
+    color: white;
+    margin-bottom: var(--button-offset);
+    padding: var(--button-offset);
+    border-radius: 10px;
+
+    cursor: pointer;
+}
+
+.component-swap-up {
+    position: absolute;
+    right: 30px;
+    top: 5px;
+}
+
+.component-swap-down {
+    position: absolute;
+    right: 15px;
+    top: 5px;
+}
+
+.property-panel {
+    bottom: var(--general-ui-offset);
+    right: var(--general-ui-offset);
+
+    width: var(--right-panel-width);
+    height: calc(100vh - 3 * var(--general-ui-offset) - var(--list-panel-height));
+
+    padding: var(--general-ui-offset);
+}
+
+.property-list {
+    height: calc(100vh - var(--list-panel-height) - 8 * var(--general-ui-offset));
+    overflow-y: auto;
+}
+
+.object-property {
+    display: flex;
+    flex-direction: column;
+    align-items: left;
+
+    width: 95%;
+    padding: 10px;
+    background-color: var(--ui-color-2);
+}
+
+.object-name {
+    font-size: 18px;
+}
+
+.primitive-property {
+    position: relative;
+
+    height: 20px;
+    width: 100%;
+
+    margin-left: var(--general-ui-offset);
+    margin-bottom: 5px;
+}
+
+.primitive-name {
+    position: absolute;
+    left: 5px;
+}
+
+.primitive-value {
+    position: absolute;
+    right: 15px;
+
+    color: white;
+    border: none;
+    padding: 3px;
+    background-color: var(--ui-color-3);
+}
+
+.model-panel {
+    top: calc(50% - var(--model-panel-height) / 2);
+    left: calc(50% - var(--model-panel-width) / 2);
+    z-index: 1;
+
+    width: var(--model-panel-width);
+    height: var(--model-panel-height);
+}
+
+.model-list-container {
+    width: calc(100%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    overflow-y: auto;
+    scrollbar-gutter: stable;
+    scrollbar-width: 10px;
+    height: calc(var(--model-panel-height) - var(--window-title-height) - 2 * var(--button-offset) - var(--model-action-height));
+
+}
+
+.model-list {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-content: flex-start;
+    justify-content: left;
+
+    width: round(down, calc(80vw - 20px), 240px);
+}
+
+.model-preview {
+    width: calc(var(--model-preview-size) - 2 * var(--general-ui-offset));
+    height: calc(var(--model-preview-size) - 2 * var(--general-ui-offset));
+    background-color: var(--ui-color-2);
+    border-radius: 10px;
+    margin: var(--general-ui-offset);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+
+    color: white;
+    cursor: pointer;
+}
+
+.model-preview.selected {
+    border: #33ff33 3px solid;
+}
+
+.model-preview.current, .component.current {
+    /* border: var(--current-outline-color) 3px solid; */
+    background-color: var(--current-color);
+}
+
+.button-row {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    margin: var(--button-offset) 0;
+}
+
+.window-action-button {
+    width: var(--model-action-width);
+    height: var(--model-action-height);
+    background-color: var(--ui-color-2);
+    border-radius: 10px;
+    margin: 0 var(--button-offset);
+    
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+    color: white;
+    cursor: pointer;
+}
+
+.window-action-button.inactive {
+    color: grey;
+    cursor: not-allowed;
+}
+
+.window-title {
+    position: relative;
+
+    width: 100%;
+    height: var(--window-title-height);
+    background-color: var(--window-bar-color);
+    border-radius: 10px 10px 0 0;
+    
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+    color: white;
+}
+
+.window-exit {
+    position: absolute;
+    top: 0;
+    right: 0;
+
+    width: var(--window-title-height);
+    height: var(--window-title-height);
+    background-color: var(--ui-color-3);
+    border-radius: 0 10px 0 0;
+    
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+    color: white;
+    cursor: pointer;
+}
+
+.hidden {
+    display: none;
+}
+
+.last {
+    margin: 0;
+}

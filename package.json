@@ -7,7 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node out/server.js",
     "build": "tsc --build --clean && tsc && npm run copy-files",
-    "copy-files": "cp src/public/*.html out/public && cp src/public/*.css out/public",
+    "copy-files": "cp src/public/*.html out/public && cp src/public/*.css out/public && cp src/public/client/animations/*.html out/public/client/animations && cp src/public/client/animations/*.css out/public/client/animations",
     "quick-start": "npm run build && npm start"
   },
   "keywords": [],
